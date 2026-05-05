@@ -28,6 +28,12 @@ npm run build
 npm run lint
 ```
 
+## Deploy no Vercel (rotas sem 404)
+
+Para permitir acesso direto a rotas como `/upload`, `/editor` e `/settings`, o projeto inclui `vercel.json` com fallback para `index.html`.
+
+Assim, qualquer rota da SPA abre corretamente mesmo após refresh ou acesso direto por URL.
+
 ## Backend para `.rar`
 
 O front chama `POST /api/extract-rar` para extrair `.rar`.

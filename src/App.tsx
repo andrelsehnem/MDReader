@@ -1,7 +1,11 @@
+import { lazy, Suspense } from 'react'
 import { NavLink, Navigate, Route, Routes } from 'react-router-dom'
-import { UploadPage } from './pages/UploadPage.tsx'
-import { EditorPage } from './pages/EditorPage.tsx'
-import { SettingsPage } from './pages/SettingsPage.tsx'
+
+const UploadPage = lazy(() => import('./pages/UploadPage.tsx').then((module) => ({ default: module.UploadPage })))
+const EditorPage = lazy(() => import('./pages/EditorPage.tsx').then((module) => ({ default: module.EditorPage })))
+const SettingsPage = lazy(() =>
+  import('./pages/SettingsPage.tsx').then((module) => ({ default: module.SettingsPage })),
+)
 
 function App() {
   return (
@@ -22,12 +26,14 @@ function App() {
       </header>
 
       <main className="app-content">
-        <Routes>
-          <Route path="/upload" element={<UploadPage />} />
-          <Route path="/editor" element={<EditorPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="*" element={<Navigate to="/upload" replace />} />
-        </Routes>
+        <Suspense fallback={<p>Carregando página…</p>}>
+          <Routes>
+            <Route path="/upload" element={<UploadPage />} />
+            <Route path="/editor" element={<EditorPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="*" element={<Navigate to="/editor" replace />} />
+          </Routes>
+        </Suspense>
       </main>
     </div>
   )
