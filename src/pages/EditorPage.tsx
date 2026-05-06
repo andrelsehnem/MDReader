@@ -9,8 +9,6 @@ const sanitizeFileName = (value: string) => {
   return cleaned || 'novo'
 }
 
-const normalizeDoubleLineBreaks = (value: string) => value.replace(/(\r?\n){2,}/g, '\n<br>\n')
-
 export function EditorPage() {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const previewRef = useRef<HTMLDivElement>(null)
@@ -156,7 +154,7 @@ export function EditorPage() {
               <textarea
                 ref={textareaRef}
                 value={markdown}
-                onChange={(event) => setMarkdown(normalizeDoubleLineBreaks(event.target.value))}
+                onChange={(event) => setMarkdown(event.target.value)}
                 onKeyDown={handleEditorKeyDown}
                 onScroll={syncPreviewFromEditor}
                 spellCheck={false}

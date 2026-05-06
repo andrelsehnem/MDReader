@@ -321,6 +321,14 @@ code {
   min-height: 100%;
 }
 
+.preview-body p {
+  margin: 0 0 0.9em;
+}
+
+.preview-body p:last-child {
+  margin-bottom: 0;
+}
+
 .preview-scroller {
   flex: 1;
   min-height: 0;

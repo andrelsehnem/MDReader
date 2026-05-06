@@ -155,7 +155,7 @@ export function EditorToolbar({ textareaRef, value, onChange }: EditorToolbarPro
       <button type="button" onClick={() => applyLinePrefix('# ', 'Título H1')}>H1</button>
       <button type="button" onClick={() => applyLinePrefix('## ', 'Título H2')}>H2</button>
       <button type="button" onClick={() => applyLinePrefix('### ', 'Título H3')}>H3</button>
-      <button type="button" onClick={() => applyBlock('<br>\n')}>Quebra</button>
+      {/* <button type="button" onClick={() => applyBlock('<br>\n')}>Quebra</button> */}
       <button type="button" onClick={() => applyWrapper({ prefix: '**', suffix: '**', placeholder: 'texto' })}>
         Negrito
       </button>
