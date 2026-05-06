@@ -2,17 +2,99 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useReducer,
   useState,
   type PropsWithChildren,
 } from 'react'
 import { EditorContext, type ImageMap } from './useEditorContext.ts'
 
 const STORAGE_KEY = 'mdreader-editor-draft'
+const MARKDOWN_HISTORY_LIMIT = 5000
 
 type PersistedDraft = {
   markdown: string
   documentTitle: string
   currentDocPath: string
+}
+
+type MarkdownHistoryState = {
+  markdown: string
+  undoStack: string[]
+  redoStack: string[]
+}
+
+type MarkdownHistoryAction =
+  | { type: 'set-markdown'; payload: string }
+  | { type: 'undo' }
+  | { type: 'redo' }
+  | { type: 'reset'; payload: string }
+
+const pushWithLimit = (values: string[], nextValue: string) => {
+  if (values.length >= MARKDOWN_HISTORY_LIMIT) {
+    return [...values.slice(1), nextValue]
+  }
+
+  return [...values, nextValue]
+}
+
+const prependWithLimit = (values: string[], nextValue: string) => {
+  return [nextValue, ...values].slice(0, MARKDOWN_HISTORY_LIMIT)
+}
+
+const markdownHistoryReducer = (
+  state: MarkdownHistoryState,
+  action: MarkdownHistoryAction,
+): MarkdownHistoryState => {
+  switch (action.type) {
+    case 'set-markdown': {
+      if (action.payload === state.markdown) {
+        return state
+      }
+
+      return {
+        markdown: action.payload,
+        undoStack: pushWithLimit(state.undoStack, state.markdown),
+        redoStack: [],
+      }
+    }
+    case 'undo': {
+      if (state.undoStack.length === 0) {
+        return state
+      }
+
+      const nextMarkdown = state.undoStack[state.undoStack.length - 1]
+      const nextUndoStack = state.undoStack.slice(0, -1)
+
+      return {
+        markdown: nextMarkdown,
+        undoStack: nextUndoStack,
+        redoStack: prependWithLimit(state.redoStack, state.markdown),
+      }
+    }
+    case 'redo': {
+      if (state.redoStack.length === 0) {
+        return state
+      }
+
+      const nextMarkdown = state.redoStack[0]
+      const nextRedoStack = state.redoStack.slice(1)
+
+      return {
+        markdown: nextMarkdown,
+        undoStack: pushWithLimit(state.undoStack, state.markdown),
+        redoStack: nextRedoStack,
+      }
+    }
+    case 'reset': {
+      return {
+        markdown: action.payload,
+        undoStack: [],
+        redoStack: [],
+      }
+    }
+    default:
+      return state
+  }
 }
 
 const getInitialDraft = (): PersistedDraft => {
@@ -54,10 +136,26 @@ const getInitialDraft = (): PersistedDraft => {
 
 export function EditorProvider({ children }: PropsWithChildren) {
   const [initialDraft] = useState(getInitialDraft)
-  const [markdown, setMarkdown] = useState(initialDraft.markdown)
+  const [markdownState, dispatchMarkdownAction] = useReducer(markdownHistoryReducer, {
+    markdown: initialDraft.markdown,
+    undoStack: [],
+    redoStack: [],
+  })
   const [documentTitle, setDocumentTitle] = useState(initialDraft.documentTitle)
   const [imageMap, setImageMapState] = useState<ImageMap>({})
   const [currentDocPath, setCurrentDocPath] = useState(initialDraft.currentDocPath)
+
+  const setMarkdown = useCallback((nextValue: string) => {
+    dispatchMarkdownAction({ type: 'set-markdown', payload: nextValue })
+  }, [])
+
+  const undo = useCallback(() => {
+    dispatchMarkdownAction({ type: 'undo' })
+  }, [])
+
+  const redo = useCallback(() => {
+    dispatchMarkdownAction({ type: 'redo' })
+  }, [])
 
   const setImageMap = useCallback((nextMap: ImageMap) => {
     setImageMapState((previousMap) => {
@@ -75,7 +173,7 @@ export function EditorProvider({ children }: PropsWithChildren) {
   }, [])
 
   const clearDraft = useCallback(() => {
-    setMarkdown('')
+    dispatchMarkdownAction({ type: 'reset', payload: '' })
     setDocumentTitle('novo')
     setCurrentDocPath('novo.md')
     setImageMap({})
@@ -91,18 +189,22 @@ export function EditorProvider({ children }: PropsWithChildren) {
     }
 
     const draftToPersist: PersistedDraft = {
-      markdown,
+      markdown: markdownState.markdown,
       documentTitle,
       currentDocPath,
     }
 
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(draftToPersist))
-  }, [markdown, documentTitle, currentDocPath])
+  }, [markdownState.markdown, documentTitle, currentDocPath])
 
   const value = useMemo(
     () => ({
-      markdown,
+      markdown: markdownState.markdown,
       setMarkdown,
+      undo,
+      redo,
+      canUndo: markdownState.undoStack.length > 0,
+      canRedo: markdownState.redoStack.length > 0,
       documentTitle,
       setDocumentTitle,
       imageMap,
@@ -111,7 +213,7 @@ export function EditorProvider({ children }: PropsWithChildren) {
       setCurrentDocPath,
       clearDraft,
     }),
-    [markdown, documentTitle, imageMap, currentDocPath, setImageMap, clearDraft],
+    [markdownState, setMarkdown, undo, redo, documentTitle, imageMap, currentDocPath, setImageMap, clearDraft],
   )
 
   return <EditorContext.Provider value={value}>{children}</EditorContext.Provider>

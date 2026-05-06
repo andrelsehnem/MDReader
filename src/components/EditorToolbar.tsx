@@ -37,12 +37,15 @@ const insertLineBlock = (
 ) => {
   const before = currentValue.slice(0, selectionStart)
   const after = currentValue.slice(selectionEnd)
-  const nextValue = `${before}${template}${after}`
+  const needsLeadingBreak = before.length > 0 && !before.endsWith('\n')
+  const needsTrailingBreak = after.length > 0 && !after.startsWith('\n')
+  const normalizedTemplate = `${needsLeadingBreak ? '\n' : ''}${template}${needsTrailingBreak ? '\n' : ''}`
+  const nextValue = `${before}${normalizedTemplate}${after}`
 
   return {
     nextValue,
-    nextStart: selectionStart,
-    nextEnd: selectionStart + template.length,
+    nextStart: selectionStart + (needsLeadingBreak ? 1 : 0),
+    nextEnd: selectionStart + (needsLeadingBreak ? 1 : 0) + template.length,
   }
 }
 
@@ -152,6 +155,7 @@ export function EditorToolbar({ textareaRef, value, onChange }: EditorToolbarPro
       <button type="button" onClick={() => applyLinePrefix('# ', 'Título H1')}>H1</button>
       <button type="button" onClick={() => applyLinePrefix('## ', 'Título H2')}>H2</button>
       <button type="button" onClick={() => applyLinePrefix('### ', 'Título H3')}>H3</button>
+      <button type="button" onClick={() => applyBlock('<br>\n')}>Quebra</button>
       <button type="button" onClick={() => applyWrapper({ prefix: '**', suffix: '**', placeholder: 'texto' })}>
         Negrito
       </button>

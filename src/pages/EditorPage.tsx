@@ -9,6 +9,8 @@ const sanitizeFileName = (value: string) => {
   return cleaned || 'novo'
 }
 
+const normalizeDoubleLineBreaks = (value: string) => value.replace(/(\r?\n){2,}/g, '\n<br>\n')
+
 export function EditorPage() {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const previewRef = useRef<HTMLDivElement>(null)
@@ -18,6 +20,8 @@ export function EditorPage() {
   const {
     markdown,
     setMarkdown,
+    undo,
+    redo,
     imageMap,
     currentDocPath,
     setCurrentDocPath,
@@ -26,6 +30,24 @@ export function EditorPage() {
     setDocumentTitle,
     clearDraft,
   } = useEditorContext()
+
+  const handleEditorKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const isModifierPressed = event.ctrlKey || event.metaKey
+    if (!isModifierPressed) return
+
+    const pressedKey = event.key.toLowerCase()
+
+    if (pressedKey === 'z' && !event.shiftKey) {
+      event.preventDefault()
+      undo()
+      return
+    }
+
+    if (pressedKey === 'y' || (pressedKey === 'z' && event.shiftKey)) {
+      event.preventDefault()
+      redo()
+    }
+  }
 
   const handleNewMarkdown = () => {
     setMarkdown('')
@@ -134,7 +156,8 @@ export function EditorPage() {
               <textarea
                 ref={textareaRef}
                 value={markdown}
-                onChange={(event) => setMarkdown(event.target.value)}
+                onChange={(event) => setMarkdown(normalizeDoubleLineBreaks(event.target.value))}
+                onKeyDown={handleEditorKeyDown}
                 onScroll={syncPreviewFromEditor}
                 spellCheck={false}
                 aria-label="Editor markdown"

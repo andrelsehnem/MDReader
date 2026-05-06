@@ -5,6 +5,10 @@ export type ImageMap = Record<string, string>
 export type EditorContextValue = {
   markdown: string
   setMarkdown: (value: string) => void
+  undo: () => void
+  redo: () => void
+  canUndo: boolean
+  canRedo: boolean
   documentTitle: string
   setDocumentTitle: (value: string) => void
   imageMap: ImageMap

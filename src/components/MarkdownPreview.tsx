@@ -1,6 +1,8 @@
 import type { RefObject } from 'react'
 import ReactMarkdown from 'react-markdown'
+import rehypeRaw from 'rehype-raw'
 import rehypeSanitize from 'rehype-sanitize'
+import remarkBreaks from 'remark-breaks'
 import remarkGfm from 'remark-gfm'
 import { resolveImageSrc } from '../services/archiveService.ts'
 
@@ -15,8 +17,8 @@ export function MarkdownPreview({ markdown, imageMap, docPath, containerRef }: M
   return (
     <div className="preview-body" ref={containerRef}>
       <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
-        rehypePlugins={[rehypeSanitize]}
+        remarkPlugins={[remarkGfm, remarkBreaks]}
+        rehypePlugins={[rehypeRaw, rehypeSanitize]}
         components={{
           img: ({ src = '', alt = '' }) => (
             <img src={resolveImageSrc(src, imageMap, docPath)} alt={alt} loading="lazy" />
