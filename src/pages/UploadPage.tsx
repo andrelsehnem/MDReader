@@ -118,20 +118,22 @@ export function UploadPage() {
 
   return (
     <section className="page">
-      <h2>1) Carregar e visualizar</h2>
+      <h2>Carregar e visualizar</h2>
       <p className="page-subtitle">
-        Envie um arquivo <strong>.md</strong> ou um pacote <strong>.zip / .rar</strong> com markdown e imagens.
+        Envie um arquivo <strong>.md</strong> ou um pacote <strong>.zip / .rar</strong> com markdown e imagens.
       </p>
 
       <div className="card">
-        <label className="upload-label" htmlFor="upload-file">
-          Escolher arquivo
+        <label className="upload-zone" htmlFor="upload-file">
+          <span className="upload-zone-icon">⊕</span>
+          <span className="upload-zone-text">Escolher arquivo</span>
+          <span className="upload-zone-hint">.md · .zip · .rar</span>
         </label>
         <input id="upload-file" type="file" accept=".md,.zip,.rar" onChange={onFileChange} />
         <button type="button" onClick={handleCreateNew}>
           Criar novo .md do zero
         </button>
-        {isLoading ? <p>Processando arquivo...</p> : null}
+        {isLoading ? <p>Processando arquivo…</p> : null}
         {error ? <p className="error">{error}</p> : null}
       </div>
 

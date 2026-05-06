@@ -102,8 +102,8 @@ export function EditorPage() {
 
   return (
     <section className="page editor-page">
-      <h2>2) Editor Markdown</h2>
-      <p className="page-subtitle">Digite do lado esquerdo e visualize formatado do lado direito.</p>
+      <h2>Editor Markdown</h2>
+      <p className="page-subtitle">Escreva à esquerda e visualize formatado à direita em tempo real.</p>
 
       <div className="page-actions">
         <button type="button" onClick={handleNewMarkdown}>

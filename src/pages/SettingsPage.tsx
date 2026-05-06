@@ -20,7 +20,7 @@ export function SettingsPage() {
   return (
     <section className="page settings-page">
       <h2>Configurações</h2>
-      <p className="page-subtitle">Escolha uma combinação predefinida de cor de fundo e fonte.</p>
+      <p className="page-subtitle">Escolha uma combinação de cores para personalizar a experiência de leitura.</p>
 
       {groupedPresets.map((group) => (
         <section key={group.category} className="settings-group">
