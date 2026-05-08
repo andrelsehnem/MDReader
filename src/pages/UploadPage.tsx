@@ -120,7 +120,7 @@ export function UploadPage() {
     <section className="page">
       <h2>Carregar e visualizar</h2>
       <p className="page-subtitle">
-        Envie um arquivo <strong>.md</strong> ou um pacote <strong>.zip / .rar</strong> com markdown e imagens.
+        Envie um arquivo <strong>.md</strong> ou um pacote <strong>.zip / .rar</strong> com markdown e imagens.
       </p>
 
       <div className="card">

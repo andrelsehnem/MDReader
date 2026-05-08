@@ -41,8 +41,8 @@ const features = [
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
       </svg>
     ),
-    title: 'Privacidade Total',
-    desc: 'Tudo roda no seu navegador. Nenhum arquivo é enviado para servidores externos.',
+    title: 'Privacidade em Primeiro Lugar',
+    desc: 'Seus arquivos são processados no navegador e não são enviados por padrão. Serviços de terceiros podem ser usados para publicidade.',
   },
 ]
 
