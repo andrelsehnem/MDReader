@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { NavLink, Navigate, Route, Routes } from 'react-router-dom'
+import { AdsterraRouteLoader } from './components/AdsterraRouteLoader.tsx'
 
 const LandingPage = lazy(() => import('./pages/LandingPage.tsx').then((module) => ({ default: module.LandingPage })))
 const UploadPage = lazy(() => import('./pages/UploadPage.tsx').then((module) => ({ default: module.UploadPage })))
@@ -11,6 +12,7 @@ const SettingsPage = lazy(() =>
 function App() {
   return (
     <div className="app-shell">
+      <AdsterraRouteLoader />
       <header className="app-header">
         <NavLink to="/" className="app-logo" aria-label="Início">MD<em>reader</em></NavLink>
         <nav className="main-nav" aria-label="Navegação principal">
