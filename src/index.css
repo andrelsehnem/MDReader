@@ -378,6 +378,19 @@ code {
   flex-wrap: wrap;
 }
 
+.editor-page .page-actions {
+  position: sticky;
+  top: 56px;
+  z-index: 30;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-sizing: border-box;
+  background-color: var(--bg);
+  box-shadow: var(--shadow-sm);
+}
+
 .sync-toggle {
   display: inline-flex;
   align-items: center;
@@ -445,7 +458,7 @@ code {
   align-items: stretch;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  overflow: hidden;
+  overflow: visible;
   box-shadow: var(--shadow-sm);
 }
 
@@ -473,10 +486,17 @@ code {
 
 .editor-tools {
   padding: 12px 8px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   min-height: 0;
   background: var(--surface);
   border-right: 1px solid var(--border);
+  position: sticky;
+  top: 136px;
+  align-self: start;
+  max-height: calc(100svh - 152px);
+  border-top-left-radius: var(--radius-lg);
+  border-bottom-left-radius: var(--radius-lg);
 }
 
 .editor-tools .toolbar {
@@ -803,6 +823,16 @@ input[type='checkbox'] {
     border-right: none;
     border-bottom: 1px solid var(--border);
     overflow: visible;
+    position: static;
+    max-height: none;
+  }
+
+  .editor-page .page-actions {
+    position: static;
+    padding: 0;
+    border: none;
+    background: transparent;
+    box-shadow: none;
   }
 
   .editor-tools .toolbar {
