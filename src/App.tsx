@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react'
 import { NavLink, Navigate, Route, Routes } from 'react-router-dom'
 import { AdsterraRouteLoader } from './components/AdsterraRouteLoader.tsx'
+import { Analytics } from '@vercel/analytics/react'
 
 const LandingPage = lazy(() => import('./pages/LandingPage.tsx').then((module) => ({ default: module.LandingPage })))
 const UploadPage = lazy(() => import('./pages/UploadPage.tsx').then((module) => ({ default: module.UploadPage })))
@@ -39,6 +40,7 @@ function App() {
           </Routes>
         </Suspense>
       </main>
+      <Analytics />
     </div>
   )
 }
