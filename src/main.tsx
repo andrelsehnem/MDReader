@@ -5,13 +5,16 @@ import './index.css'
 import App from './App.tsx'
 import { EditorProvider } from './state/EditorContext.tsx'
 import { ThemeSettingsProvider } from './state/ThemeSettingsContext.tsx'
+import { CookieConsentProvider } from './state/CookieConsentContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <ThemeSettingsProvider>
         <EditorProvider>
-          <App />
+          <CookieConsentProvider>
+            <App />
+          </CookieConsentProvider>
         </EditorProvider>
       </ThemeSettingsProvider>
     </BrowserRouter>

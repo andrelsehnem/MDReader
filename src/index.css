@@ -44,6 +44,7 @@
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
+
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -766,6 +767,157 @@ code {
   font-weight: 700;
   font-style: italic;
   letter-spacing: -0.04em;
+}
+
+/* ── Cookie banner ───────────────────────────────────── */
+
+.cookie-banner {
+  position: fixed;
+  left: 24px;
+  right: 24px;
+  bottom: 20px;
+  z-index: 70;
+  max-width: 920px;
+  margin: 0 auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--surface) 90%, var(--bg));
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 16px 48px 16px 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.cookie-banner-content {
+  display: grid;
+  gap: 8px;
+  text-align: left;
+}
+
+.cookie-banner-content h3 {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.cookie-banner-content p {
+  margin: 0;
+  color: var(--text-h);
+  font-size: 14px;
+  line-height: 1.45;
+  max-width: 70ch;
+}
+
+.cookie-banner-content a {
+  width: fit-content;
+  text-decoration: none;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 1px solid transparent;
+  transition: color 140ms, border-color 140ms;
+}
+
+.cookie-banner-content a:hover {
+  color: var(--text-h);
+  border-color: var(--text-h);
+}
+
+.cookie-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cookie-banner-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 14px;
+  font: 13px/1 var(--font-ui);
+  font-weight: 600;
+  cursor: pointer;
+  transition: box-shadow 140ms, transform 100ms, background 140ms, color 140ms;
+}
+
+.cookie-banner-actions button:hover {
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.cookie-banner-reject {
+  color: var(--text-h);
+  background: var(--surface);
+}
+
+.cookie-banner-reject:hover {
+  background: var(--surface-2);
+}
+
+.cookie-banner-accept {
+  color: var(--accent);
+  background: var(--accent-bg);
+  border-color: var(--accent-border);
+}
+
+.cookie-banner-accept:hover {
+  color: var(--text-h);
+  background: color-mix(in srgb, var(--accent-bg) 72%, var(--surface));
+}
+
+.cookie-banner-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition: box-shadow 140ms, background 140ms, color 140ms;
+}
+
+.cookie-banner-close:hover {
+  box-shadow: var(--shadow-sm);
+  color: var(--text-h);
+  background: var(--surface-2);
+}
+
+@media (max-width: 760px) {
+  .cookie-banner {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    padding: 14px 42px 14px 14px;
+    gap: 10px;
+  }
+
+  .cookie-banner-content p {
+    font-size: 13px;
+  }
+
+  .cookie-banner-actions {
+    gap: 8px;
+  }
+
+  .cookie-banner-actions button {
+    flex: 1 1 140px;
+  }
 }
 
 /* â”€â”€ Upload preview card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */

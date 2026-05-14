@@ -1,3 +1,5 @@
+import { canLoadTrackingScripts } from './cookieConsentService.ts'
+
 const ADSTERRA_SCRIPT_SRC = 'https://pl29372616.profitablecpmratenetwork.com/fc/9d/c8/fc9dc8de59ab8e6bd62ad29f9b1fc89a.js'
 const ADSTERRA_MIN_RELOAD_MS = 1500
 
@@ -39,6 +41,11 @@ function dispatchAdEvent(status: 'load' | 'error', pathname: string) {
 
 export function refreshAdsterraByRoute(pathname: string) {
   if (typeof window === 'undefined' || typeof document === 'undefined') {
+    return
+  }
+
+  if (!canLoadTrackingScripts()) {
+    removeExistingAdsterraScripts()
     return
   }
 

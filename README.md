@@ -13,6 +13,39 @@ Aplicação React para leitura e edição de arquivos Markdown com duas páginas
 - Resolução de imagens relativas vindas do pacote.
 - Toolbar com: H1/H2/H3, negrito, itálico, link, imagem, lista, checklist, código inline, bloco de código, citação, separador e tabela.
 - Estado em memória (sem autosave).
+- Banner de cookies com consentimento (aceitar, rejeitar e fechar temporariamente por 30 dias).
+
+## Banner de cookies e rastreamento
+
+O projeto inclui um banner global de consentimento, fixo no rodapé, com suporte a tema claro/escuro e presets.
+
+### Comportamento
+
+- **ACEITAR**: salva no `localStorage` com data (`{"cookieConsent":"accepted","date":"..."}`), fecha o banner e libera rastreamento.
+- **REJEITAR**: salva no `localStorage` (`{"cookieConsent":"rejected"}`), fecha o banner e não carrega rastreamento.
+- **X (fechar)**: salva estado temporário (`dismissed`) e exibe novamente após 30 dias.
+
+Chave de storage: `mdreader-cookie-consent`.
+
+### Variáveis opcionais
+
+Crie um `.env` na raiz para personalizar integrações:
+
+```bash
+VITE_PRIVACY_POLICY_URL=https://seusite.com/politica-de-privacidade
+VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+VITE_GTM_ID=GTM-XXXXXXX
+```
+
+- `VITE_PRIVACY_POLICY_URL`: link usado no banner (fallback para `/settings`).
+- `VITE_GA_MEASUREMENT_ID`: ativa Google Analytics (gtag) após consentimento.
+- `VITE_GTM_ID`: ativa Google Tag Manager após consentimento.
+
+Sem consentimento de cookies, o app mantém bloqueados:
+
+- Vercel Analytics
+- loader de script Adsterra
+- GA/GTM (quando configurados)
 
 ## Desenvolvimento
 
